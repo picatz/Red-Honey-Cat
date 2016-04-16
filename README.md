@@ -4,7 +4,7 @@ Red Honey Cat is a simple, easy to use honey pot that sets up what looks like is
  
 ## Installation
 You're going to need to install the following ruby gems for rainbow powers and other functionality:  
-                                                                   
+
 `gem install lolize logger`
 
 ## Usage
@@ -20,19 +20,6 @@ View Help
 
 `ruby red-honey-cat.rb -h`
 
-## Help Menu
-`RED HONEY CAT 
-
-Usage: red-honey-cat.rb [OPTIONS]
-
-EX: red-honey-cat.rb -p 31337
-
-Options: 
-    -p, --port <PORT>                Define the port to start honeypot on.
-    -b, --banner <BANNER>            Define a custom banner to be set for your honeypot.
-    -l, --lol                        Rainbow support, because we need it.
-    -v, --version                    Show verison number.
-    -h, --help                       Help menu.`
 ---
 
 ### Credits
