@@ -17,10 +17,10 @@ module Logging
 
   # Global, memoized, lazy initialized instance of a logger
   def self.logger
-      @logger ||= Logger.new 'hcat.log'
+    @logger ||= Logger.new 'hcat.log'
   end
 end
- 
+
 def script_banner
   puts "RED HONEY CAT \n"
 end
@@ -28,7 +28,7 @@ end
 def version
   puts "Version : 1.0"
 end
- 
+
 def cls
   if RUBY_PLATFORM =~ /win32|win64|\.NET|windows|cygwin|mingw32/i
     system('cls')
@@ -36,39 +36,39 @@ def cls
     system('clear')
   end
 end
- 
+
 class HoneyCat
   include Logging
-		
+
   def listener(port,banner=nil)
 
-		# check if banner is set or not
-		if banner.nil?
-			banner = 'MS-IIS WEB SERVER 5.0'
-		else
-			banner = banner
-		end
+    # check if banner is set or not
+    if banner.nil?
+      banner = 'MS-IIS WEB SERVER 5.0'
+    else
+      banner = banner
+    end
 
     logger.info("STARTING HONEYPOT ON PORT #{port} -- #{banner}")
     puts "Setting up Listener on port #{port}...."
-    
+
     # Spawn server
     server = TCPServer.new(port)
     # Listen for connections
     server.listen(1)
-    
+
     loop do 
       # wait for a client to connect
       client = server.accept
-      
+
       # extract the IP and PORT the hacker is using.
       hacker_port, hacker_ip = Socket.unpack_sockaddr_in(client.getpeername)
-      
+
       puts "Connection from #{hacker_ip}"
       # Log more events.
       logger.warn("CONNECTION MADE TO HONEYPOT")
       logger.warn("HONEYPOT CAUGHT -- FROM IP: #{hacker_ip} -- FROM PORT: #{hacker_port}")
-      
+
       # Provide a fake banner. 
       client.puts banner
 
@@ -78,7 +78,7 @@ class HoneyCat
     end
   end
 end
- 
+
 options = {}
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} [OPTIONS]"
@@ -90,21 +90,21 @@ optparse = OptionParser.new do |opts|
     options[:port] = port.to_i
     options[:method] = 0
   end
-	opts.on('-b', '--banner <BANNER>', "Define a custom banner to be set for your honeypot.") do |banner|
-		options[:banner] = banner.to_s
-		options[:method] = 1
-	end
-	opts.on('-l', '--lol', "Rainbow support, because we need it.") do 
+  opts.on('-b', '--banner <BANNER>', "Define a custom banner to be set for your honeypot.") do |banner|
+    options[:banner] = banner.to_s
+    options[:method] = 1
+  end
+  opts.on('-l', '--lol', "Rainbow support, because we need it.") do 
     require 'lolize/auto'
   end
-	opts.on('-v', '--version', "Show verison number.") do 
+  opts.on('-v', '--version', "Show verison number.") do 
     script_banner
     version
     exit
   end
   opts.on('-h', '--help', "Help menu.") do
     cls
-		script_banner
+    script_banner
     puts
     puts opts
     puts
@@ -144,11 +144,11 @@ end
 trap("SIGINT") { puts "\n\nCTRL+C Detected! \nClosing Connections + Shutting down..."; exit;}
 
 rc = HoneyCat.new
- 
+
 case options[:method].to_i
 when 0
-	# use default banner
+  # use default banner
   rc.listener(options[:port])
 when 1
-	rc.listener(options[:port],options[:banner])
+  rc.listener(options[:port],options[:banner])
 end
